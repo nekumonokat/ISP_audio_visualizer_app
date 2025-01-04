@@ -10,10 +10,11 @@ function setupBase() {
     soundSelect.option("sound 1");
     soundSelect.option("sound 2");
     soundSelect.option("sound 3");
-    soundSelect.selected("sound 1");
+    soundSelect.option("sound 4");
+    soundSelect.selected("sound 4");
     soundSelect.position(100, 20);
     soundSelect.addClass("soundSelect");
-    prevSound = "sound 1";
+    prevSound = "sound 4";
 }
 
 // PLAYING AND PAUSING AUDIO
@@ -46,6 +47,7 @@ function changeAudio(soundChoice) {
         if (soundChoice == "sound 1") currSound = mySound1;
         else if (soundChoice == "sound 2") currSound = mySound2;
         else if (soundChoice == "sound 3") currSound = mySound3;
+        else if (soundChoice == "sound 4") currSound = mySound4;
 
         prevSound = soundChoice;
         // changing analyzer source
