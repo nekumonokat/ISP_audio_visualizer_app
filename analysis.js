@@ -45,8 +45,8 @@ function displayFeatures(features) {
         rms: { min: 0, max: 0.5 },
         zcr: { min: 0, max: 255 }, // default zcr range for 512 buffer
         spectralCentroid: { min: 0, max: 50 }, // half of sampling rate
-        spectralKurtosis: { min: 0, max: 255 }, // sound 3?
-        chroma: { min: 0, max: 1 }, // sound 3?
+        spectralKurtosis: { min: 0, max: 255 }, // sound 3
+        chroma: { min: 0, max: 1 },
         perceptualSharpness: { min: 0, max: 1 }, // sound 2?
     }
 
@@ -62,18 +62,20 @@ function displayFeatures(features) {
 
 // DRAWING EACH FEATURE OUT FOR ANALYSIS
 function drawFeatures() {
-    if (featureValues) {
-        let x = 50; // starting y position
-        for (let feature in featureValues) {
-            let size = featureValues[feature];
-            fill(100, 100, 255);
-            ellipse(x, 100, size);
-            fill(0);
-            textSize(10);
-            textAlign(CENTER, CENTER);
-            text(`${feature}`, x, 150);
-            text(`${size.toFixed(2)}`, x, 160);
-            x += 85;
+    push();
+        if (featureValues) {
+            let x = 50; // starting y position
+            for (let feature in featureValues) {
+                let size = featureValues[feature];
+                fill(100, 100, 255);
+                ellipse(x, 80, size);
+                fill(0);
+                textSize(10);
+                textAlign(CENTER, CENTER);
+                text(`${feature}`, x, 130);
+                text(`${size.toFixed(2)}`, x, 140);
+                x += 85;
+            }
         }
-    }
+    pop();
 }
