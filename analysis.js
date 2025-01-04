@@ -31,8 +31,21 @@ function setupMeyda() {
 // GENERATING CODE FOR MAPPING VALUES
 function mapFeatureValues(value, min, max) {
     // calculate mean for the array feature
-    if (Array.isArray(value)) { value = value.reduce((sum, val) => sum + val, 0) / value.length; }
+    if (Array.isArray(value)) value = value.reduce((sum, val) => sum + val, 0) / value.length;
+    // handle NaN or undefined values
+    if (isNaN(value) || value === undefined) value = min;
     return map(value, min, max, 1, 50); // maps between 1-50px
+}
+
+// GENERATING CODE FOR SMOOTHING VALUES
+function smoothFeatureValues(feature, currValue) {
+    // handle NaN or undefined values: default to 0
+    if (isNaN(currValue) || currValue === undefined) currValue = 0;
+    // initialising smoothed value if it doesnt exist
+    if (!(feature in smoothedValues)) smoothedValues[feature] = currValue;
+    // apply smoothing: weighted average of curr and prev value
+    smoothedValues[feature] = (smoothedValues[feature] * (1 - smoothingFactor)) + (currValue * smoothingFactor);
+    return smoothedValues[feature];
 }
 
 // STORING FEATURES TO RESPECTIVE VALUES
@@ -55,7 +68,12 @@ function displayFeatures(features) {
         if (features.hasOwnProperty(feature) && featureRanges[feature]) {
             // mapping each feature to the respective values
             const {min, max} = featureRanges[feature];
-            featureValues[feature] = mapFeatureValues(features[feature], min, max);
+            const rawValue = features[feature];
+
+            // mapping of values
+            const mappedValue = mapFeatureValues(rawValue, min, max);
+            // apply smoothing
+            featureValues[feature] = smoothFeatureValues(feature, mappedValue);
         }
     }
 }
